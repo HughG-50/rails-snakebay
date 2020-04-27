@@ -31,7 +31,28 @@ class ListingsController < ApplicationController
     end
 
     def update
-        #finsih logic for updating the record
+        # not sure about breed parameter, do we update Breed/Breed table at the same time?
+        
+        title = params["title"]
+        description = params["description"]
+        sex = params["sex"]
+        price = params["price"]
+        deposit = params["deposit"]
+        date_of_birth = params["date_of_birth"]
+        picture = params["picture"]
+
+        # probably should be using Listing.update(params["id"], ...) method isntead
+        updated_listing = Listing.find_by_title(title)
+        updated_listing.description = description
+        updated_listing.sex = sex
+        updated_listing.price = price 
+        updated_listing.deposit = deposit 
+        updated_listing.date_of_birth = date_of_birth
+        updated_listing.picture = picture
+        updated_listing.save
+
+        # double check this
+        redirect_to edit_listing_path
     end
 
     def destroy
