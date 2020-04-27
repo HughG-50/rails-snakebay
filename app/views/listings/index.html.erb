@@ -1,0 +1,6 @@
+<%  for listing in @listings %>
+    <li>
+        <%= link_to listing.title, listing_path(listing.id)%>
+        <%= image_tag listing.picture if listing.picture.attached? %>
+    </li>
+<% end %>
