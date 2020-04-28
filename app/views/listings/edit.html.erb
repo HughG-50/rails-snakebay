@@ -1,4 +1,12 @@
-<h1>New Listing</h1>
+<h1>Edit Listing</h1>
+
+<%# New and the edit are exactly the same forms %>
+<%# We could use partials - to put commonly used html in multiple areas %>
+<%# _form.html.erb - all the code below into a partial %>
+<%# adding a value: listing.title etc - will auto fill form with what is already stored in the database %>
+
+<%# Using a partial %>
+<%#= render "form", listing: @listing, sexes: @sexes, breeds: @breeds %>
 
 <% if @listing.errors.any? %>
     <% @listing.errors.full_messages.each do |message| %>

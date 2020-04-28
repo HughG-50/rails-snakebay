@@ -2,5 +2,14 @@
     <li>
         <%= link_to listing.title, listing_path(listing.id)%>
         <%= image_tag listing.picture if listing.picture.attached? %>
+        <%# Edit - link to form, Delete - Forms %>
+        <%= link_to "edit", edit_listing_path(listing.id) %>
+
+        <%# form_with - generate a form, model is the listing, local - true - determines how the request is made %>
+        <%# method - delete -makes delete request when form is submitted %>
+        <%= form_with model: listing, local: true, method: "delete" do |form| %>
+            <%# This is what is what generates the http request, that gets handled by the destroy action in controller, class - is just for styling %>
+            <%= submit_tag "delete", class: "icon" %>
+        <% end %>
     </li>
 <% end %>

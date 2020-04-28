@@ -1,1 +1,12 @@
-show
+<h1>Show</h1>
+
+<li>
+    <%= link_to @listing.title, listing_path(@listing.id)%>
+    <%= image_tag @listing.picture if @listing.picture.attached? %>
+
+    <%# Link to Edit form, and add delete form %>
+    <%= link_to "edit", edit_listing_path(listing.id) %>
+    <%= form_with model: listing, local: true, method: "delete" do |form| %>
+        <%= submit_tag "delete", class: "icon" %>
+    <% end %>
+</li>
