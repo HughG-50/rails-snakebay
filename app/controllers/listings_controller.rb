@@ -1,6 +1,7 @@
 class ListingsController < ApplicationController
     before_action :authenticate_user!
-    before_action :set_listing, only: [:show, :edit, :update, :destroy]
+    before_action :set_user_listing, only: [:edit, :update, :destroy]
+    before_action :set_listing, only: [:show]
 
     def index
         @listings = Listing.all
@@ -16,7 +17,11 @@ class ListingsController < ApplicationController
     end
 
     def create
-        @listing = Listing.create(listing_params)
+        # @listing = Listing.create(listing_params)
+
+        # Listing now belongs to user, so we need to use current_user to retrieve the thing we want
+        @listing = current_user.listings.create(listing_params)
+
         if @listing.errors.any?
             set_breeds_and_sexes
             render "new"
@@ -62,5 +67,16 @@ class ListingsController < ApplicationController
     def listing_params
         params.require(:listing).permit(:title, :description, :breed_id, :sex, :city, :state, :price, :deposit, :date_of_birth, :diet, :picture)
     end
+    
+    # We want to be able to have a way to limit the scope of what users are authorised to do
+    # What this does is attempts to retrive the listing from the logged in user, if we can't
+    # find one then just redirect back to the listing page
+    def set_user_listing
+        id = params[:id]
+        @listing = current_user.listings.find_by_id(id)
 
+        if @listing == nil
+            redirect_to listings_path
+        end
+    end
 end
