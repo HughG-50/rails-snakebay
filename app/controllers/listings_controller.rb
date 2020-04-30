@@ -10,11 +10,13 @@ class ListingsController < ApplicationController
     # rendering purchase button in the show method, so boilerplate Stripe Checkout code goes in here
     def show
         session = Stripe::Checkout::Session.create(
+            # CC as payment type
             payment_method_types: ['card'],
             customer_email: current_user.email,
             line_items: [{
                 name: @listing.title,
                 description: @listing.description,
+                # Amount is in cents, so needs to be multiplied by 100
                 amount: @listing.deposit * 100,
                 currency: 'aud',
                 quantity: 1,
@@ -26,6 +28,9 @@ class ListingsController < ApplicationController
                 }
             },
             success_url: "#{root_url}payments/success?userId=#{current_user.id}&listingId=#{@listing.id}",
+            # root_url method returns the domain that the application is currently using - do this instead of 
+            # hardcoding so that when we push all of our code to Heroku, we won't have to make a change in our code
+            # - automatically returns a new domain
             cancel_url: "#{root_url}listings"
         )
     

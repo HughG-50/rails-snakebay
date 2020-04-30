@@ -1,4 +1,28 @@
-<h1>Show Listing Item</h1>
+<h1><%= @listing.title %></h1>
+
+<h2>Description</h2>
+<p><%= @listing.description %></p>
+
+<button data-stripe="payment">
+  Pay Deposit <%= number_to_currency(@listing.deposit) %>
+</button>
+
+<script src="https://js.stripe.com/v3/"></script>
+
+<script>
+  document
+    .querySelector("[data-stripe='payment']")
+    .addEventListener("click", () => {
+      const stripe = Stripe(
+        "<%= Rails.application.credentials.dig(:stripe, :public_key) %>"
+      );
+
+      stripe.redirectToCheckout({
+        sessionId: "<%= @session_id %>"
+      });
+    });
+</script>
+
 
 <li>
     <%= link_to @listing.title, listing_path(@listing.id)%>

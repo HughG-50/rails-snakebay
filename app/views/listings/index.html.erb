@@ -1,5 +1,7 @@
 <%  for listing in @listings %>
     <li>
+        <%# links to the View page version of the listing %>
+        <%= link_to "view", listing_path(listing) %>
         <%= link_to listing.title, listing_path(listing.id)%>
         <%= image_tag listing.picture if listing.picture.attached? %>
         <%# Edit - link to form, Delete - Forms %>
